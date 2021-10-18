@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import s from './Filter.module.css';
 
-class Filter extends Component {
-  render() {
-    const { filter, onChange } = this.props;
+function Filter({ filter, onChange }) {
+ 
 
     return (
       <div className={s.filterForm}>
@@ -23,7 +22,7 @@ class Filter extends Component {
       </div>
     );
   }
-}
+
 
 Filter.propTypes = {
   onChange: PropTypes.func.isRequired,

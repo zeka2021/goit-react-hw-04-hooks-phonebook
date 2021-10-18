@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import  { useState, useEffect } from 'react';
 import ContactForm from './ContactForm';
 import ContactList from './ContactList';
 import Contact from './ContactList/Contact';
@@ -6,20 +6,24 @@ import Filter from './Filter';
 
 import { v4 as uuidv4 } from 'uuid';
 
-class App extends Component {
-  state = {
-    contacts: [],
-    filter: '',
+function App() {
+  const [contacts, setContacts] = useState(
+    () => JSON.parse(window.localStorage.getItem('contacts')) ?? [],
+  );
+
+  const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
+
+  const deleteContact = id => {
+   setContacts(state => state.filter(contact => contact.id !== id));
   };
 
-  deleteContact = id => {
-    this.setState(({ contacts }) => ({
-      contacts: contacts.filter(contact => contact.id !== id),
-    }));
-  };
-
-  formSubmitHandler = data => {
-    const { contacts } = this.state;
+  const formSubmitHandler = data => {
+    
     const { name } = data;
     const contactId = uuidv4();
     const newContact = { ...data, id: contactId };
@@ -32,31 +36,22 @@ class App extends Component {
       return;
     }
 
-    this.setState(({ contacts }) => ({
-      contacts: [...contacts, newContact],
-    }));
+    setContacts(state => [...state, newContact]);
   };
 
-  changeFilter = e => {
-    this.setState({ filter: e.currentTarget.value });
+  const changeFilter = e => {
+    setFilter( e.currentTarget.value);
   };
 
-  filterContacts = () => {
-    const { contacts, filter } = this.state;
+  const filterContacts = () => {
+   
 
     return [...contacts].filter(({ name }) =>
       name.toLowerCase().includes(filter),
     );
   };
 
-  render() {
-    const {
-      filterContacts,
-      formSubmitHandler,
-      changeFilter,
-      deleteContact,
-      state: { filter },
-    } = this;
+ 
     const filteredContacts = filterContacts();
 
     return (
@@ -82,5 +77,5 @@ class App extends Component {
       </div>
     );
   }
-}
+
 export default App;

@@ -1,13 +1,9 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import s from './Contact.module.css';
 
-class Contact extends Component {
-  render() {
-    const {
-      contact: { name, number, id },
-      deleteContact,
-    } = this.props;
+function Contact({ contact: { name, number, id }, deleteContact }) {
+ 
 
     return (
       <li className={s.itemContact}>
@@ -19,7 +15,7 @@ class Contact extends Component {
       </li>
     );
   }
-}
+
 
 Contact.propTypes = {
   deleteContact: PropTypes.func.isRequired,

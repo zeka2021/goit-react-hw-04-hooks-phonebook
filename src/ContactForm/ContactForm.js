@@ -1,44 +1,49 @@
-import React, { Component } from 'react';
+import  { useState } from 'react';
 import PropTypes from 'prop-types';
 import s from './ContactForm.module.css';
 
-class ContactForm extends Component {
-  state = {
-    name: '',
-    number: '',
-  };
+function ContactForm({ onSubmit}) {
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
 
-  handleChange = e => {
+  const handleChange = e => {
     const { name, value } = e.target;
-    this.setState({
-      [name]: value,
-    });
+      switch (name) {
+      case 'name':
+        setName(value);
+        break;
+
+      case 'number':
+        setNumber(value);
+        break;
+
+      default:
+        break;
+    }
   };
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
 
-    this.props.onSubmit(this.state);
-    this.reset();
+    onSubmit({ name, number});
+    reset();
   };
 
-  reset = () => {
-    this.setState({
-      name: '',
-      number: '',
-    });
+  const reset = () => {
+     setName('');
+    setNumber('');
   };
-  render() {
+  
     return (
       <div className={s.wrapperForm}>
-        <form className={s.bodyForm} onSubmit={this.handleSubmit}>
+        <form className={s.bodyForm} onSubmit={handleSubmit}>
           <div className={s.formGrup}>
             <label className={s.formGgroupLabel}>
               Name
               <input
                 type="text"
-                value={this.state.name}
-                onChange={this.handleChange}
+                value={name}
+                onChange={handleChange}
                 name="name"
                 pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Имя может состоять только из букв, апострофа, тире и пробелов. Например Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan и т. п."
@@ -50,8 +55,8 @@ class ContactForm extends Component {
               number
               <input
                 type="tel"
-                value={this.state.number}
-                onChange={this.handleChange}
+                value={number}
+                onChange={handleChange}
                 name="number"
                 pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                 title="Номер телефона должен состоять цифр и может содержать пробелы, тире, круглые скобки и может начинаться с +"
@@ -69,7 +74,7 @@ class ContactForm extends Component {
       </div>
     );
   }
-}
+
 
 ContactForm.propTypes = {
   onSubmit: PropTypes.func.isRequired,

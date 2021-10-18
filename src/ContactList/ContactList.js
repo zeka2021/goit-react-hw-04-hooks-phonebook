@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
+// import React, { Component } from 'react';
 import s from './ContactList.module.css';
 
-class ContactList extends Component {
-  render() {
+function ContactList({ children}) {
+  
     return (
       <div className={s.container}>
-        <ul className={s.listContainer}>{this.props.children}</ul>
+        <ul className={s.listContainer}>{children}</ul>
       </div>
     );
   }
-}
+
 export default ContactList;
